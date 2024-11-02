@@ -79,7 +79,7 @@ router.get("/", async (req, res) => {
                         learner_id: "$_id",
                         avg_per_class: 1,
                         overall_avg: 1,
-                        is_above_70: { $gt: ["$overall_avg", 70] }
+                        is_above_50: { $gt: ["$overall_avg", 50] }
                     }
                 },
 
@@ -89,8 +89,8 @@ router.get("/", async (req, res) => {
                         debug_sample: [
                             { $limit: 100 }  // Show sample of 5 learners for debugging
                         ],
-                        learners_above_70: [
-                            { $match: { overall_avg: { $gt: 70 } } },
+                        learners_above_50: [
+                            { $match: { overall_avg: { $gt: 50 } } },
                             { $count: "count" }
                         ],
                         total_learners: [
@@ -116,16 +116,16 @@ router.get("/", async (req, res) => {
 
         // Extracting statistics from result
         const debug_info = result[0];
-        const learners_above_70_count = debug_info.learners_above_70[0]?.count || 0;
+        const learners_above_50_count = debug_info.learners_above_50[0]?.count || 0;
         const total_learners_count = debug_info.total_learners[0]?.count || 0;
-        const percentage_above_70 = total_learners_count
-            ? (learners_above_70_count / total_learners_count) * 100
+        const percentage_above_50 = total_learners_count
+            ? (learners_above_50_count / total_learners_count) * 100
             : 0;
 
         const stats = {
-            learners_above_70: learners_above_70_count,
+            learners_above_50: learners_above_50_count,
             total_learners: total_learners_count,
-            percentage_above_70: percentage_above_70,
+            percentage_above_50: percentage_above_50,
             debug: {
                 sample_learners: debug_info.debug_sample,
                 score_distribution: debug_info.avg_distribution,
