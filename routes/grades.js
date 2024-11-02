@@ -67,14 +67,15 @@ router.get('/class/:id', async (req, res, next) => {
 router.get("/learner/:id/class/average", async (req, res, next) => {
   try {
     let collection = db.collection("grades");
-    let query = { learner_id: Number(req.params.id)}
+    let query = { learner_id: Number(req.params.id) }
     let learnerGrades = await collection.find(query).toArray()
 
     const averages = learnerGrades.reduce((acc, grade) => {
       let sum = 0;
       for (let i = 0; i < grade.scores.length; i++) {
         if (typeof grade.scores[i].score === 'number') {
-          sum += grade.scores[i].score        }
+          sum += grade.scores[i].score
+        }
       }
       acc[grade.class_id] = sum / grade.scores.length
       return acc
@@ -93,7 +94,7 @@ router.get("/learner/:id/class/average", async (req, res, next) => {
 router.get("/learner/:id/average", async (req, res, next) => {
   try {
     let collection = db.collection("grades");
-    let query = { learner_id: Number(req.params.id)}
+    let query = { learner_id: Number(req.params.id) }
     let learnerGrades = await collection.find(query).toArray()
     let sum = 0;
     let scoreCount = 0
@@ -198,10 +199,10 @@ router.patch('/:id/remove', async (req, res, next) => {
 router.patch("/class/:id", async (req, res, next) => {
   try {
     let collection = db.collection("grades")
-    let query = { class_id: Number(req.params.id)}
+    let query = { class_id: Number(req.params.id) }
 
     let result = await collection.updateMany(query, {
-      $set: {class_id: req.body.class_id}
+      $set: { class_id: req.body.class_id }
     })
 
     if (!result) res.send("Not found").status(404);
@@ -230,7 +231,7 @@ router.delete("/:id", async (req, res, next) => {
 router.delete("/learner/:id", async (req, res, next) => {
   try {
     let collection = db.collection("grades")
-    let query = { learner_id: Number(req.params.id)}
+    let query = { learner_id: Number(req.params.id) }
 
     let result = await collection.deleteMany(query)
 
@@ -245,7 +246,7 @@ router.delete("/learner/:id", async (req, res, next) => {
 router.delete("/class/:id", async (req, res, next) => {
   try {
     let collection = db.collection("grades")
-    let query = { class_id: Number(req.params.id)}
+    let query = { class_id: Number(req.params.id) }
 
     let result = await collection.deleteMany(query)
 

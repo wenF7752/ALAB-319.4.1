@@ -2,7 +2,7 @@ import express from "express";
 import "dotenv/config";
 import grades from './routes/grades.js';
 import grades_agg from "./routes/grades_agg.js";
-
+import stats from "./routes/stats.js";
 
 const PORT = process.env.PORT || 3000
 const app = express();
@@ -17,6 +17,8 @@ app.get("/", (req, res) => {
   res.send("Welcome to the API")
 })
 
+
+app.use("/grades/stats", stats);
 app.use("/grades", grades)
 app.use("/grades", grades_agg);
 
